@@ -19,7 +19,7 @@ function Stagger(stores, options) {
   this.percolate = !!options.percolate; // Write a value that was not found on get to the stores where it wasn't found in case it is found below
   this.writeDepth = parseInt(options.writeDepth || 1); // Write just to the first service, or to all
   this.writeDepth = (isNaN(this.writeDepth) ? 1 : Math.min(this.writeDepth, stores.length)) || 1;
-  this.removeDepth = parseInt(options.removeDepth || 1);
+  this.removeDepth = parseInt(options.removeDepth || this.writeDepth);
   this.removeDepth = (isNaN(this.removeDepth) ? this.writeDepth : Math.min(this.removeDepth, stores.length)) || this.writeDepth;
 }
 
@@ -35,7 +35,7 @@ Stagger.prototype._get = function(name, callback) {
     });
   }, function() {
     if (!self.percolate) return callback(null, value || null);
-    async.each(stores.slice(0, this.writeDepth), function(store, callback) {
+    async.each(stores.slice(0, self.writeDepth), function(store, callback) {
       store.set(name, value, callback);
     }, function(err) {
       callback(err || null, value);
