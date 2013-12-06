@@ -5,6 +5,7 @@
 'use strict';
 
 module.exports = Stagger;
+module.exports.kvt = 'utility';
 
 var Abstract = require('kvs-abstract');
 var async = require('async');
@@ -20,7 +21,7 @@ function Stagger(stores, options) {
   this.writeDepth = parseInt(options.writeDepth || 1); // Write just to the first service, or to all
   this.writeDepth = (isNaN(this.writeDepth) ? 1 : Math.min(this.writeDepth, stores.length)) || 1;
   this.removeDepth = parseInt(options.removeDepth || this.writeDepth);
-  this.removeDepth = (isNaN(this.removeDepth) ? this.writeDepth : Math.min(this.removeDepth, stores.length)) || this.writeDepth;
+  this.removeDepth = (isNaN(this.removeDepth) ? stores.length : Math.min(this.removeDepth, stores.length)) || stores.length;
 }
 
 Stagger.prototype._get = function(name, callback) {

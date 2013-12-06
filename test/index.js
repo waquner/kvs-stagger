@@ -16,7 +16,7 @@ Lab.experiment('stagger tests', function() {
     { data:{}, get:get, set:set, list:list, remove:remove },
     { data:{ 'test2':new Buffer('some other data that is only in the third store') }, get:get, set:set, list:list, remove:remove }
   ];
-  var stagger = new Stagger(stores, { writeDepth:2 });
+  var stagger = new Stagger(stores, { writeDepth:2, removeDepth:2 });
   Lab.test('write', function(done) {
     stagger.set('test1', testData, function(err) {
       Lab.expect(!err).to.equal(true);
