@@ -29,9 +29,13 @@ Stagger.prototype._get = function(name, callback) {
   var value, stores=[];
   async.eachSeries(this.stores, function(store, callback) {
     if (value) callback(null, value);
-    store.get(name, function(err, val) {
-      value = val;
-      if (!value) stores.push(store);
+    store.get(name, function(err, val) {      
+      if (!val){
+        stores.push(store);
+      } else {
+        value = val;
+      }
+
       callback();
     });
   }, function() {
