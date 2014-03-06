@@ -31,7 +31,7 @@ Stagger.prototype._get = function(name, callback) {
     if (value) callback(null, value);
     store.get(name, function(err, val) {      
       if (!val){
-        (idx++ < self.writeDepth) && stores.push(store);
+        (++idx < self.writeDepth) && stores.push(store);
       } else {
         value = val;
       }
