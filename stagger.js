@@ -29,9 +29,10 @@ Stagger.prototype._get = function(name, callback) {
   var value, stores=[], idx=0;
   async.eachSeries(this.stores, function(store, callback) {
     if (value) callback(null, value);
-    store.get(name, function(err, val) {      
+    store.get(name, function(err, val) {    console.log(val);
+      idx++;
       if (!val){
-        (++idx < self.writeDepth) && stores.push(store);
+        (idx <= self.writeDepth) && stores.push(store);
       } else {
         value = val;
       }
@@ -40,7 +41,7 @@ Stagger.prototype._get = function(name, callback) {
     });
   }, function() {
     if (!self.percolate) return callback(null, value || null);
-    async.each(stores, function(store, callback) {
+    async.each(stores, function(store, callback) {console.log(value);
       store.set(name, value, callback);
     }, function(err) {
       callback(err || null, value);
