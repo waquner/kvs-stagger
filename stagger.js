@@ -41,6 +41,7 @@ Stagger.prototype._get = function(name, callback) {
     });
   }, function() {
     if (!self.percolate) return callback(null, value || null);
+    if (!value) return callback(null, value || null);
     async.each(stores, function(store, callback) {console.log(value);
       store.set(name, value, callback);
     }, function(err) {
